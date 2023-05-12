@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.AdminMapper">
+
+    <insert id="insert">
+        insert into books (book_name, author)
+        VALUES (#{bookName}, #{author})
+    </insert>
+    <delete id="delete">
+        delete
+        from books
+        where id = #{id}
+    </delete>
+    <select id="select" resultType="com.library.pojo.Book">
+        select * from books;
+    </select>
+</mapper>

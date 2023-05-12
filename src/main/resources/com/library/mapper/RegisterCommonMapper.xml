@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.RegisterCommonMapper">
+
+    <insert id="insert">
+        insert into reader (id, password, reader_name, gender)
+        VALUES(#{id},#{password},#{readerName},#{gender})
+    </insert>
+    <select id="select" resultType="com.library.pojo.Reader">
+        select * from reader where id=#{id}
+    </select>
+</mapper>

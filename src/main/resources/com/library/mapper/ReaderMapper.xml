@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.mapper.ReaderMapper">
+    <insert id="insert">
+        #         insert into borrow (reader_id, book_id, book_name)
+#         VALUES ("jokerchen",(select min(id)
+#                              from books
+#                              where book_name = "水浒传"),"水浒传");
+        insert into borrow (reader_id, book_id, book_name)
+        VALUES (#{readerId}, #{bookId}, #{bookName})
+    </insert>
+    <delete id="delete">
+        delete
+        from borrow
+        where book_id = #{bookId}
+    </delete>
+
+    <select id="select" resultType="com.library.pojo.Book">
+        select book_name, author, borrow_time, last_return_time
+        from books,
+             borrow
+        where borrow.book_id = books.id
+          and reader_id = #{id}
+    </select>
+    <select id="selectMinId" resultType="int">
+        select min(id)
+        from books
+        where book_name = #{bookName}
+          and state = 1
+    </select>
+    <select id="search" resultType="int">
+        select book_id
+        from borrow
+        where book_name = #{bookName}
+    </select>
+    <select id="selectAllBook" resultType="com.library.pojo.Book">
+        select *
+        from books
+        where book_name = #{bookName}
+          and state = 1
+    </select>
+    <select id="selectAllBooks" resultType="com.library.pojo.Book">
+        select *
+        from books
+    </select>
+
+    <update id="update">
+        update books
+        set state=0,
+            borrow_time=now()
+        where id = #{bookId}
+    </update>
+    <update id="updateBookName">
+        update books
+        set state=1,
+            last_return_time=now()
+        where id = #{bookId}
+    </update>
+</mapper>
