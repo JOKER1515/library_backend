@@ -26,4 +26,8 @@ public interface ReaderMapper {
     List<Book> selectAllBook(Borrow borrow);
 
     List<Book> selectAllBooks();
+
+    List<Borrow> selectBorrowedBooks(Reader reader);
+
+    List<Book> selectBorrowedBookList(Borrow borrow);
 }

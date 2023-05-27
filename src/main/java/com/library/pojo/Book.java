@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +15,6 @@ public class Book {
     private String bookName;
     private String author;
     private Integer state;
-    private LocalDateTime borrowTime;
-    private LocalDateTime lastReturnTime;
+    private LocalDate borrowTime;
+    private LocalDate lastReturnTime;
 }

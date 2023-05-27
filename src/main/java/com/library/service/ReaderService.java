@@ -20,4 +20,6 @@ public interface ReaderService {
     List<Book> selectAllBook(Borrow borrow);
 
     List<Book> selectAllBooks();
+
+    List<Book> selectBorrowedBooks(Reader reader);
 }

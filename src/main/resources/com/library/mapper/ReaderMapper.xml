@@ -18,7 +18,7 @@
     </delete>
 
     <select id="select" resultType="com.library.pojo.Book">
-        select book_name, author, borrow_time, last_return_time
+        select borrow.book_name, author, borrow_time, last_return_time
         from books,
              borrow
         where borrow.book_id = books.id
@@ -44,6 +44,14 @@
     <select id="selectAllBooks" resultType="com.library.pojo.Book">
         select *
         from books
+    </select>
+    <select id="selectBorrowedBooks" resultType="com.library.pojo.Borrow">
+        select *
+        from borrow
+        where reader_id = #{id}
+    </select>
+    <select id="selectBorrowedBookList" resultType="com.library.pojo.Book">
+        select * from books where id = #{bookId}
     </select>
 
     <update id="update">

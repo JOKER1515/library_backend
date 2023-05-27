@@ -18,9 +18,15 @@ public class ReaderController {
     @Autowired
     private ReaderService readerService;
 
-    @GetMapping
+    @GetMapping("allBooks")
     public Result selectAll(){
         List<Book> bookList = readerService.selectAllBooks();
+        return Result.success(bookList);
+    }
+
+    @PutMapping("borrowedBooks")
+    public  Result selectBorrowedBooks(@RequestBody Reader reader){
+        List<Book> bookList = readerService.selectBorrowedBooks(reader);
         return Result.success(bookList);
     }
 
@@ -34,11 +40,6 @@ public class ReaderController {
     public Result insert(@RequestBody Borrow borrow) {
         //查询所有符合的书籍
         List<Book> bookList = readerService.selectAllBook(borrow);
-        for (Book book : bookList) {
-            if (book.getBookName().equals(borrow.getBookName())) {
-                return Result.error("您已经拥有该书，请勿借阅相同书本");
-            }
-        }
         if (bookList.size() != 0) {
             //查询符合条件的书本的最小ID
             int id = readerService.selectMinId(borrow);
