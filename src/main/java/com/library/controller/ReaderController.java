@@ -38,8 +38,17 @@ public class ReaderController {
 
     @PostMapping("/borrow")
     public Result insert(@RequestBody Borrow borrow) {
+
+        Reader reader = new Reader(borrow.getReaderId(), "","","");
         //查询所有符合的书籍
         List<Book> bookList = readerService.selectAllBook(borrow);
+        List<Book> borrowList = readerService.selectBorrowedBooks(reader);
+        for (Book book:borrowList
+             ) {
+            if(book.getBookName().equals(borrow.getBookName())){
+                return Result.error("书本已经被借走");
+            }
+        }
         if (bookList.size() != 0) {
             //查询符合条件的书本的最小ID
             int id = readerService.selectMinId(borrow);
