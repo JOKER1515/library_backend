@@ -15,6 +15,7 @@ public class Book {
     private String bookName;
     private String author;
     private Integer state;
+    private String stateMessage;
     private LocalDate borrowTime;
     private LocalDate lastReturnTime;
 }

@@ -56,7 +56,33 @@ public class ReaderServiceImp implements ReaderService {
 
     @Override
     public List<Book> selectAllBooks() {
-        return readerMapper.selectAllBooks();
+        List<Book> bookList = readerMapper.selectAllBooks();
+        for (int j = 0; j < bookList.size() - 1; j++) {
+            for (int k = j + 1; k < bookList.size(); k++) {
+                if (bookList.get(j).getBookName().equals(bookList.get(k).getBookName())) {
+                    if ((bookList.get(j).getState() == 0 && bookList.get(k).getState() == 0)
+                            || (bookList.get(j).getState() != 0 && bookList.get(k).getState() == 0)
+                            || (bookList.get(j).getState() != 0 && bookList.get(k).getState() != 0)) {
+                        bookList.remove(k);
+                        k -= 1;
+                    } else {
+                        bookList.remove(j);
+                        j -= 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (Book book:bookList
+             ) {
+            if(book.getState()==1){
+                book.setStateMessage("可借 有剩余");
+            }else {
+                book.setStateMessage("书本无剩余");
+            }
+        }
+        return bookList;
     }
 
     @Override
