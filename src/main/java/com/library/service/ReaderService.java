@@ -22,4 +22,6 @@ public interface ReaderService {
     List<Book> selectAllBooks();
 
     List<Book> selectBorrowedBooks(Reader reader);
+
+    List<Book> searchByBookName(com.library.pojo.Book book);
 }

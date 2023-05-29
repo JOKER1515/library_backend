@@ -51,7 +51,14 @@
         where reader_id = #{id}
     </select>
     <select id="selectBorrowedBookList" resultType="com.library.pojo.Book">
-        select * from books where id = #{bookId}
+        select *
+        from books
+        where id = #{bookId}
+    </select>
+    <select id="searchByBookName" resultType="com.library.pojo.Book">
+        select *
+        from books
+        where book_name like concat('%', #{bookName}, '%');
     </select>
 
     <update id="update">

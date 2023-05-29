@@ -5,6 +5,7 @@ import com.library.pojo.Book;
 import com.library.pojo.Borrow;
 import com.library.pojo.Reader;
 import com.library.service.ReaderService;
+import com.library.util.DeleteSame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,9 @@ public class ReaderServiceImp implements ReaderService {
         return readerMapper.selectMinId(borrow);
     }
 
+    /**
+     * 归还书籍
+     */
     @Override
     public void bookReturn(Borrow borrow) {
         //查询书名所对应的ID
@@ -54,37 +58,27 @@ public class ReaderServiceImp implements ReaderService {
         return readerMapper.selectAllBook(borrow);
     }
 
+    /**
+     * 返回所有书籍，相同的书名只会展示一个
+     */
     @Override
     public List<Book> selectAllBooks() {
         List<Book> bookList = readerMapper.selectAllBooks();
-        for (int j = 0; j < bookList.size() - 1; j++) {
-            for (int k = j + 1; k < bookList.size(); k++) {
-                if (bookList.get(j).getBookName().equals(bookList.get(k).getBookName())) {
-                    if ((bookList.get(j).getState() == 0 && bookList.get(k).getState() == 0)
-                            || (bookList.get(j).getState() != 0 && bookList.get(k).getState() == 0)
-                            || (bookList.get(j).getState() != 0 && bookList.get(k).getState() != 0)) {
-                        bookList.remove(k);
-                        k -= 1;
-                    } else {
-                        bookList.remove(j);
-                        j -= 1;
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (Book book:bookList
-             ) {
-            if(book.getState()==1){
+        DeleteSame.deleteSame(bookList);
+        for (Book book : bookList
+        ) {
+            if (book.getState() == 1) {
                 book.setStateMessage("可借 有剩余");
-            }else {
+            } else {
                 book.setStateMessage("书本无剩余");
             }
         }
         return bookList;
     }
 
+    /**
+     * 查询所借阅的书籍
+     */
     @Override
     public List<Book> selectBorrowedBooks(Reader reader) {
         List<Borrow> borrowList = readerMapper.selectBorrowedBooks(reader);
@@ -99,5 +93,14 @@ public class ReaderServiceImp implements ReaderService {
 //        System.out.println(bookListResult);
         //返回查询到的书的信息
         return bookListResult;
+    }
+
+    /**
+     * 根据书名查询图书
+     */
+    @Override
+    public List<Book> searchByBookName(Book book) {
+        return readerMapper.searchByBookName(book);
+
     }
 }

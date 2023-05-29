@@ -15,6 +15,9 @@ public interface ReaderMapper {
 
     void update(Borrow borrow);
 
+    /**
+     * 获取最小ID
+     */
     int selectMinId(Borrow borrow);
 
     int search(Borrow borrow);
@@ -23,11 +26,20 @@ public interface ReaderMapper {
 
     void updateBookName(Borrow borrow);
 
+
     List<Book> selectAllBook(Borrow borrow);
 
+    /**
+     * 获取所有图书
+     */
     List<Book> selectAllBooks();
 
     List<Borrow> selectBorrowedBooks(Reader reader);
 
     List<Book> selectBorrowedBookList(Borrow borrow);
+
+    /**
+     * 根据书名查询图书
+     */
+    List<Book> searchByBookName(Book book);
 }

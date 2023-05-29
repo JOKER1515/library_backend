@@ -5,6 +5,7 @@ import com.library.pojo.Borrow;
 import com.library.pojo.Reader;
 import com.library.pojo.Result;
 import com.library.service.ReaderService;
+import com.library.util.DeleteSame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +19,39 @@ public class ReaderController {
     @Autowired
     private ReaderService readerService;
 
+    /**
+     * 查询所有图书
+     */
     @GetMapping("allBooks")
     public Result selectAll(){
         List<Book> bookList = readerService.selectAllBooks();
         return Result.success(bookList);
     }
 
-    @PutMapping("borrowedBooks")
+    @PutMapping("/borrowedBooks")
     public  Result selectBorrowedBooks(@RequestBody Reader reader){
         List<Book> bookList = readerService.selectBorrowedBooks(reader);
         return Result.success(bookList);
     }
+
+    /**
+     * 根据书名查询图书
+     */
+    @PutMapping("/searchByBookName")
+    public Result searchByBookName(@RequestBody Book book){
+        List<Book> bookList = readerService.searchByBookName(book);
+        DeleteSame.deleteSame(bookList);
+        return Result.success(bookList);
+    }
+
+    /**
+     * 根据作者名字查询图书
+     */
+    @PutMapping("/searchByAuthorName")
+    public Result searchByAuthorName(){
+        return null;
+    }
+
 
     @PostMapping("/search")
     public Result select(@RequestBody Reader reader) {
@@ -36,6 +59,9 @@ public class ReaderController {
         return Result.success(bookList);
     }
 
+    /**
+     * 借阅方法
+     */
     @PostMapping("/borrow")
     public Result insert(@RequestBody Borrow borrow) {
 
@@ -63,6 +89,9 @@ public class ReaderController {
         return Result.error("书本不存在或者已经被借走");
     }
 
+    /**
+     * 归还方法
+     */
     @PostMapping("/return")
     public Result delete(@RequestBody Borrow borrow) {
         //查询书本名称对应的书本ID
