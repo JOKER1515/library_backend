@@ -35,9 +35,9 @@ public class ReaderController {
     }
 
     /**
-     * 根据书名查询图书
+     * 根据书名或者作者等信息查询图书
      */
-    @PutMapping("/searchByBookName")
+    @PutMapping("/searchByInfo")
     public Result searchByBookName(@RequestBody Book book){
         List<Book> bookList = readerService.searchByBookName(book);
         DeleteSame.deleteSame(bookList);
