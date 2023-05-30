@@ -58,7 +58,8 @@
     <select id="searchByBookName" resultType="com.library.pojo.Book">
         select *
         from books
-        where book_name like concat('%', #{bookName}, '%');
+        where book_name like concat('%', #{bookName}, '%')
+           or author like concat('%', #{bookName}, '%');
     </select>
 
     <update id="update">

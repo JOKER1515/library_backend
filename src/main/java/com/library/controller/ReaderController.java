@@ -23,33 +23,34 @@ public class ReaderController {
      * 查询所有图书
      */
     @GetMapping("allBooks")
-    public Result selectAll(){
+    public Result selectAll() {
         List<Book> bookList = readerService.selectAllBooks();
         return Result.success(bookList);
     }
 
     @PutMapping("/borrowedBooks")
-    public  Result selectBorrowedBooks(@RequestBody Reader reader){
+    public Result selectBorrowedBooks(@RequestBody Reader reader) {
         List<Book> bookList = readerService.selectBorrowedBooks(reader);
         return Result.success(bookList);
     }
 
     /**
      * 根据书名或者作者等信息查询图书
+     * searchByBookName不只可以查询图书
      */
     @PutMapping("/searchByInfo")
-    public Result searchByBookName(@RequestBody Book book){
+    public Result searchByBookName(@RequestBody Book book) {
         List<Book> bookList = readerService.searchByBookName(book);
         DeleteSame.deleteSame(bookList);
+        for (Book book2 : bookList
+        ) {
+            if (book2.getState() == 1) {
+                book2.setStateMessage("可借 有剩余");
+            } else {
+                book2.setStateMessage("书本无剩余");
+            }
+        }
         return Result.success(bookList);
-    }
-
-    /**
-     * 根据作者名字查询图书
-     */
-    @PutMapping("/searchByAuthorName")
-    public Result searchByAuthorName(){
-        return null;
     }
 
 
@@ -65,13 +66,13 @@ public class ReaderController {
     @PostMapping("/borrow")
     public Result insert(@RequestBody Borrow borrow) {
 
-        Reader reader = new Reader(borrow.getReaderId(), "","","");
+        Reader reader = new Reader(borrow.getReaderId(), "", "", "");
         //查询所有符合的书籍
         List<Book> bookList = readerService.selectAllBook(borrow);
         List<Book> borrowList = readerService.selectBorrowedBooks(reader);
-        for (Book book:borrowList
-             ) {
-            if(book.getBookName().equals(borrow.getBookName())){
+        for (Book book : borrowList
+        ) {
+            if (book.getBookName().equals(borrow.getBookName())) {
                 return Result.error("书本已经被借走");
             }
         }
