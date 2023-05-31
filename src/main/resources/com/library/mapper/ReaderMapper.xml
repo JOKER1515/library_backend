@@ -55,6 +55,8 @@
         from books
         where id = #{bookId}
     </select>
+
+<!--    模糊查询书籍-->
     <select id="searchByBookName" resultType="com.library.pojo.Book">
         select *
         from books
